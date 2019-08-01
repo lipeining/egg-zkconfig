@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  zookeeper: 
+    image: 'wurstmeister/zookeeper'
+    expose:
+      - "2181"
+    ports:
+      - "2181:2181"
+  zookeeper-webui:
+    image: 'tobilg/zookeeper-webui'
+    links:
+      - zookeeper
+    ports:
+      - "3700:3700"    
+    environment:
+      HTTP_PORT: 3700
+      USER: duoyi
+      PASSWORD: duoyi
+      ZK_DEFAULT_NODE: zookeeper:2181/
+  redis1:
+    image: "redis:4.0"
+    ports:
+      - "6000:6379"    
+  redis2:
+    image: "redis:4.0"
+    ports:
+      - "6100:6379"     
+  # zkui:
+  #   image: qnib/zkui
+  #   environment:
+  #     DC_NAME: qnib
+  #     # If this variable is set, the ZK servers are set directly, otherwise
+  #     # consul will figure it out
+  #     ZKUI_ZK_SERVER: zookeeper:2181
+  #   links:
+  #     - zookeeper
+  #   expose:
+  #     - "3500"      
+  #   ports:
+  #     - 3500:3500
